@@ -15,5 +15,9 @@ class User(db.Model):
     last_name=db.Column(db.String(50), nullable=False)
     image_url=db.Column(db.String(500), nullable=False, default='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
 
+
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
     
 

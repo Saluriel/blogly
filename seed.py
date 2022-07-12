@@ -6,8 +6,8 @@ db.create_all()
 
 User.query.delete()
 
-Linda = User(first_name='Linda', last_name='H')
-Brad = User(first_name='Brad', last_name='fdsafsdafsda')
+Linda = User(first_name='Linda', last_name='H', image_url='https://upload.wikimedia.org/wikipedia/commons/2/2b/Jessica_Ennis_%28May_2010%29_cropped.jpg')
+Brad = User(first_name='Brad', last_name='fdsafsdafsda', image_url='https://m.media-amazon.com/images/M/MV5BMjA1MjE2MTQ2MV5BMl5BanBnXkFtZTcwMjE5MDY0Nw@@._V1_.jpg')
 Gregory = User(first_name='Gregory', last_name='FSDAFASDF')
 SomeGuy = User(first_name='SomeGuy', last_name='?????')
 RandomPerson = User(first_name='!!!!!!', last_name='!!!!!!')
