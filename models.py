@@ -19,5 +19,9 @@ class User(db.Model):
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    full_name = property(
+        fget=get_full_name
+    )
+
     
 
