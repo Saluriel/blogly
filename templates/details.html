@@ -5,14 +5,22 @@
 <h1>{{user.get_full_name()}}</h1>
 <img src="{{user.image_url}}" width='200' height="200">
 <br>
-<form action='/users/{{user.id}}/edit'>
-    <button>Edit</button>
-</form>
-<form action="/users/{{user.id}}/delete" , method="POST">
-    <button>Delete</button>
-</form>
+<ul>
+    {%for post in posts%}
+    <li><a href="/posts/{{post.id}}"">{{post.title}}</a></li>
+</ul>
+{%endfor%}
+<form action=" /users/{{user.id}}/posts/new">
+            <button>Add Post</button>
+            </form>
+            <form action='/users/{{user.id}}/edit'>
+                <button>Edit</button>
+            </form>
+            <form action="/users/{{user.id}}/delete" , method="POST">
+                <button>Delete</button>
+            </form>
 
-<a href="/">Back to the user list</a>
+            <a href="/">Back to the user list</a>
 
 
-{% endblock %}
+            {% endblock %}

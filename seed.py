@@ -1,4 +1,4 @@
-from models import User, db
+from models import User, db, Post
 from app import app
 
 db.drop_all()
@@ -18,6 +18,14 @@ db.session.add(Gregory)
 db.session.add(SomeGuy)
 db.session.add(RandomPerson)
 
+db.session.commit()
 
+
+p1 = Post(title='Test1', content='I found a really cool rock today', user_id=1)
+p2 = Post(title='Test2', content='fjkdlsajfdlas', user_id=1)
+p3 = Post(title='Test3', content='fjkdlsajfdlas', user_id=1)
+p4 = Post(title='Test4', content='fjkdlsajfdlas', user_id=1)
+
+db.session.add_all([p1, p2, p3, p4])
 
 db.session.commit()

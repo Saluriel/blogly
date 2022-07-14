@@ -2,7 +2,10 @@
 
 from flask import Flask, request, render_template,  redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db,  connect_db, User
+from models import db,  connect_db, User, Post
+from sqlalchemy import func
+from sqlalchemy import desc
+
 
 app = Flask(__name__)
 
@@ -27,6 +30,7 @@ def home_page():
 def users_page():
     """Shows a list of all the users with links to their information page"""
     users = User.query.order_by('last_name').all()
+    # print(users)
     return render_template('homepage.html', users=users)
 
 @app.route('/users/new')
@@ -51,7 +55,8 @@ def process_new_users():
 def show_user(user_id):
     """Shows details about a single user"""
     user = User.query.get_or_404(user_id)
-    return render_template('details.html', user=user)
+    posts = Post.query.filter_by(user_id=user.id)
+    return render_template('details.html', user=user, posts=posts)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user(user_id):
@@ -69,7 +74,7 @@ def process_edit_user(user_id):
     user = User.query.get(user_id)
     user.first_name = first_name
     user.last_name = last_name
-    user.image_url = image_url if image_url else None
+    user.image_url = image_url if image_url else ''
 
     db.session.add(user)
     db.session.commit()
@@ -86,6 +91,61 @@ def delete_user(user_id):
 
     return redirect('/users')
 
+@app.route('/users/<user_id>/posts/new')
+def add_post(user_id):
+    """Form to add a post made by that user"""
+    user = User.query.get(user_id)
+    return render_template('post_form.html', user=user)
+
+@app.route('/users/<user_id>/posts/new', methods=['POST'])
+def handle_add_post(user_id):
+    """Route to process the add post form"""
+    user = User.query.get(user_id)
+    title = request.form['title']
+    content = request.form['content']
+    
+    new_post = Post(title = title, content=content, user_id=user_id)
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect (f'/users/{user.id}')
+
+@app.route('/posts/<post_id>')
+def show_users_posts(post_id):
+    """Shows the post a user has made"""
+
+    post = Post.query.get(post_id)
+    return render_template('post_details.html', post=post)
+
+@app.route('/posts/<post_id>/edit')
+def edit_post(post_id):
+    """Shows edit post form"""
+    post = Post.query.get(post_id)
+    return render_template('edit_post_form.html', post=post)
+
+@app.route('/posts/<post_id>/edit', methods=['POST'])
+def handle_edit_post(post_id):
+    """Edits the post"""
+    post = Post.query.get(post_id)
+    title = request.form['title']
+    content=request.form['content']
+
+    post.title = title
+    post.content=content
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/posts/{post.id}')
+
+@app.route('/posts/<post_id>/delete')
+def delete_post(post_id):
+    """Deletes a user's post"""
+    post = Post.query.get(post_id)
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{post.user_id}')
 
 
 
