@@ -6,7 +6,11 @@
 
 <form action="/posts/{{post.id}}/edit" method="POST">
     Title <input type="text" name="title" value="{{post.title}}"><br>
-    Content <input type="text" name="content" value="{{post.content}}">
+    Content <input type="text" name="content" value="{{post.content}}"><br>
+    {%for tag in tags%}
+    <input type="checkbox" id="{{tag.id}}" name="tag" value="{{tag.id}}">
+    <label for="{{tag.id}}">{{tag.name}}</label><br>
+    {%endfor%}<br>
     <button>Add</button>
 </form>
 <br>

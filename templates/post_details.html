@@ -5,8 +5,10 @@
 <h1>{{post.title}}</h1>
 
 {{post.content}}
-
-<br><br>
+<br>
+<b>Tags:</b>
+{%for tag in post.tags%}<a href="/tags/{{tag.id}}">{{tag.name}}</a>
+{%endfor%}
 <form action="/posts/{{post.id}}/edit">
     <button>Edit Post</button>
 </form>
